@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.javagreenS_jjm.dao.QnaDAO">
+	<select id="qnaListTotRecCnt" resultType="int">
+		select count(*) from qna2;
+	</select>
+	
+	<select id="getQnaList" resultType="com.spring.javagreenS_jjm.vo.QnaVO">
+		select * from qna2, qnaType2 where qna2.qnaTypeIdx = qnaType2.idx order by qna2.idx desc limit #{startIndexNo}, #{pageSize};
+	</select>
+	
+	<select id="getQnaContent" resultType="com.spring.javagreenS_jjm.vo.QnaVO">
+		select * from qna2, qnaType2 where qna2.qnaTypeIdx = qnaType2.idx and qna2.idx = #{idx};
+	</select>
+	
+	<select id="getQnaType" resultType="com.spring.javagreenS_jjm.vo.QnaTypeVO">
+		select * from qnaType2;
+	</select>
+	
+	<select id="maxLevelOrder" resultType="String">
+		select max(levelOrder) from qnaReply2 where qnaIdx = #{qnaIdx};
+	</select>
+	
+	<select id="getQnaReply" resultType="com.spring.javagreenS_jjm.vo.QnaReplyVO">
+		select * from qnaReply2 where qnaIdx = #{idx} order by levelOrder;
+	</select>
+	
+	
+	<insert id="setQnaInput">
+		insert into qna2 values(default, #{vo.mid}, #{vo.name}, #{vo.qnaTypeIdx}, #{vo.title}, #{vo.content}, default, #{vo.openSw}, default);
+	</insert>
+	
+	<insert id="setQnaReplyInput">
+		insert into qnaReply2 values (default, #{replyVo.qnaIdx}, #{replyVo.mid}, #{replyVo.name}, #{replyVo.content}, default, default, #{replyVo.levelOrder}, default);
+	</insert>
+	
+	<insert id="setQnaReplyInput2">
+		insert into qnaReply2 values (default, #{replyVo.qnaIdx}, #{replyVo.mid}, #{replyVo.name}, #{replyVo.content}, default, #{replyVo.level}, #{replyVo.levelOrder}, default);
+	</insert>
+	
+	
+	<update id="setQnaUpdate">
+		update qna2 set qnaTypeIdx = #{vo.qnaTypeIdx}, title = #{vo.title}, content = #{vo.content}, wDate = default, openSw = #{vo.openSw} where idx = ${vo.idx};
+	</update>
+	
+	<update id="setQnaAdChkUpdate">
+		update qna2 set adChk = 'yes' where idx = #{qnaIdx};
+	</update>
+	
+	<update id="setQnaReplyDeleteOk">
+		update qnaReply2 set deleteSw ='yes' where idx = #{idx};
+	</update>
+	
+	<update id="levelOrderPlusUpdate">
+		update qnaReply2 set levelOrder = levelOrder + 1 where qnaIdx = #{replyVo.qnaIdx} and levelOrder > #{replyVo.levelOrder};
+	</update>
+	
+	<update id="setQnaAdChkUpdate2">
+		update qna2 set adChk = 'no' where idx = #{qnaIdx};
+	</update>
+	
+	
+	<delete id="qnaDelete">
+		delete from qna2 where idx = #{idx};
+	</delete>
+</mapper>

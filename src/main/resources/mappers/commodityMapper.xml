@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.javagreenS_jjm.dao.CommodityDAO">
+	<select id="candleTotRecCnt" resultType="int">
+		select count(*) from product2 where pno = 1;
+	</select>
+	
+	<select id="getCandleList" resultType="com.spring.javagreenS_jjm.vo.ProductVO">
+		select * from product2, productType2 where product2.pno = productType2.pno and product2.pno = 1 order by idx desc limit #{startIndexNo}, #{pageSize};
+	</select>
+	
+	<select id="diffuserTotRecCnt" resultType="int">
+		select count(*) from product2 where pno = 2;
+	</select>
+	
+	<select id="getDiffuserList" resultType="com.spring.javagreenS_jjm.vo.ProductVO">
+		select * from product2, productType2 where product2.pno = productType2.pno and product2.pno = 2 order by idx desc limit #{startIndexNo}, #{pageSize};
+	</select>
+	
+	<select id="sprayTotRecCnt" resultType="int">
+		select count(*) from product2 where pno = 3;
+	</select>
+	
+	<select id="getSprayList" resultType="com.spring.javagreenS_jjm.vo.ProductVO">
+		select * from product2, productType2 where product2.pno = productType2.pno and product2.pno = 3 order by idx desc limit #{startIndexNo}, #{pageSize};
+	</select>
+	
+	<select id="sachetTotRecCnt" resultType="int">
+		select count(*) from product2 where pno = 4;
+	</select>
+	
+	<select id="getSachetList" resultType="com.spring.javagreenS_jjm.vo.ProductVO">
+		select * from product2, productType2 where product2.pno = productType2.pno and product2.pno = 4 order by idx desc limit #{startIndexNo}, #{pageSize};
+	</select>
+	
+	<select id="hbTotRecCnt" resultType="int">
+		select count(*) from product2 where pno = 5;
+	</select>
+	
+	<select id="getHbList" resultType="com.spring.javagreenS_jjm.vo.ProductVO">
+		select * from product2, productType2 where product2.pno = productType2.pno and product2.pno = 5 order by idx desc limit #{startIndexNo}, #{pageSize};
+	</select>
+	
+	<select id="perfumeTotRecCnt" resultType="int">
+		select count(*) from product2 where pno = 6;
+	</select>
+	
+	<select id="getPerfumeList" resultType="com.spring.javagreenS_jjm.vo.ProductVO">
+		select * from product2, productType2 where product2.pno = productType2.pno and product2.pno = 6 order by idx desc limit #{startIndexNo}, #{pageSize};
+	</select>
+	
+	<select id="getContent" resultType="com.spring.javagreenS_jjm.vo.ProductVO">
+		select * from product2, productType2 where product2.pno = productType2.pno and product2.idx = #{idx};
+	</select>
+	
+	<select id="getReviewList" resultType="com.spring.javagreenS_jjm.vo.ReviewVO">
+		select * from review2 where review2.commodity like concat('%',#{commodity},'%');
+	</select>
+	
+	
+	<insert id="cartInput">
+		<if test="optionSize != 0">
+			insert into cart2 values(default, #{vo.productIdx}, #{vo.pno}, #{vo.mid}, #{vo.commodity}, #{vo.salePrice}, #{vo.optionName}, #{vo.optionPrice}, #{vo.orderQuantity}, #{vo.totPrice}, #{vo.totSavePoint}, #{vo.fSName}, default);
+		</if>
+		<if test="optionSize == 0">
+			insert into cart2 values(default, #{vo.productIdx}, #{vo.pno}, #{vo.mid}, #{vo.commodity}, #{vo.salePrice}, '', 0, ${vo.orderQuantity}, #{vo.totPrice}, #{vo.totSavePoint}, #{vo.fSName}, default);
+		</if>
+	</insert>
+	
+</mapper>

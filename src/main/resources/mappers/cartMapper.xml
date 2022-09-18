@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.javagreenS_jjm.dao.CartDAO">
+	<select id="getCartList" resultType="com.spring.javagreenS_jjm.vo.CartVO">
+		select * from cart2 where mid = #{mid};
+	</select>
+	
+	<select id="getCartListCnt" resultType="int">
+		select count(*) from cart2 where mid = #{mid};
+	</select>
+	
+	<select id="getOrderMaxIdx" resultType="com.spring.javagreenS_jjm.vo.OrderVO">
+		select max(idx) as maxIdx from order2;
+	</select>
+	
+	<select id="getCartIdx" resultType="com.spring.javagreenS_jjm.vo.CartVO">
+		select * from cart2 where idx = #{idx};
+	</select>
+	
+	
+	<insert id="setOrderInput">
+		insert into order2 values (default,#{vo.orderIdx},#{vo.mid},#{vo.productIdx},#{vo.commodity},#{vo.salePrice},#{vo.orderQuantity},#{vo.optionName},#{vo.totPrice},#{vo.totSavePoint},#{vo.fSName},default);
+	</insert>
+	
+	<insert id="setBaesongInput">
+		insert into baesong2 values (default,#{baesongVo.oIdx},#{baesongVo.orderIdx},#{baesongVo.orderTotalPrice},#{baesongVo.mid},#{baesongVo.name},#{baesongVo.address},#{baesongVo.tel},#{baesongVo.email},#{baesongVo.message},'card',default,default);
+	</insert>
+	
+	
+	<update id="setCartUpdate">
+		update cart2 set orderQuantity = #{vo.orderQuantity}, totPrice = #{vo.totPrice}, totSavePoint = #{vo.totSavePoint}, cartDay = default where idx = #{vo.idx};
+	</update>
+	
+	<update id="setMemberPointUpdate">
+		update login2 set point = point - #{usePoint} + #{point} where mid = #{mid};
+	</update>
+	
+	<update id="setQuantityUpdate">
+		update product2 set quantity = quantity - ${orderQuantity} where idx = #{productIdx};
+	</update>
+	
+	
+	<delete id="setCartDelete">
+		delete from cart2 where idx = #{idx};
+	</delete>
+	
+	<delete id="setCartDeleteAll">
+		delete from cart2 where idx = #{cartIdx};
+	</delete>
+</mapper>

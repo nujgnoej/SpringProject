@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.javagreenS_jjm.dao.ProductDAO">
+	<select id="getProductList" resultType="com.spring.javagreenS_jjm.vo.ProductVO">
+		select * from product2, productType2 where product2.pno = productType2.pno order by idx desc limit #{startIndexNo}, #{pageSize};
+	</select>
+
+	<select id="totRecCnt" resultType="int">
+		select count(*) from product2;
+	</select>
+
+	<select id="getProductType" resultType="com.spring.javagreenS_jjm.vo.ProductTypeVO">
+		select * from productType2;
+	</select>
+
+	<select id="getProductInfo" resultType="com.spring.javagreenS_jjm.vo.ProductVO">
+		select * from product2, productType2 where product2.pno = productType2.pno and idx = #{idx};
+	</select>
+
+
+	<insert id="imgCheckProductInput">
+		insert into product2 values (default, #{vo.pno}, #{vo.commodity}, #{vo.quantity}, #{vo.price}, #{vo.discount}, #{vo.size}, #{vo.fName}, #{vo.fSName}, #{vo.fSize}, #{vo.optionName}, #{vo.optionPrice}, #{vo.content}, default);
+	</insert>
+	
+	
+	<update id="productImgDelete">
+		update product2 set fName = #{fName}, fSName = #{fSName} where idx = #{idx};
+	</update>
+	
+	<update id="setProductUpdate">
+		update product2 set pno = #{vo.pno}, commodity = #{vo.commodity}, quantity = #{vo.quantity}, price = #{vo.price}, discount = #{vo.discount}, size = #{vo.size}, fName = #{vo.fName}, fSName = #{vo.fSName}, fSize = #{vo.fSize}, optionName = #{vo.optionName}, optionPrice = #{vo.optionPrice}, content = #{vo.content}, inputDay = default where idx = #{vo.idx};
+	</update>
+	
+	<update id="quantityOrder">
+		update product2 set quantity = quantity + #{orderQuantity} where idx = #{idx};
+	</update>
+	
+	
+	<delete id="setProductDelete">
+		delete from product2 where idx = #{idx};
+	</delete>
+	
+</mapper>

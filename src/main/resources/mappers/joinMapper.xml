@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.javagreenS_jjm.dao.JoinDAO">
+	<select id="getJoinIdCheck" resultType="com.spring.javagreenS_jjm.vo.JoinVO">
+		select * from login2 where mid = #{mid};
+	</select>
+	
+	<select id="getJoinEmailCheck" resultType="com.spring.javagreenS_jjm.vo.JoinVO">
+		select * from login2 where email = #{email};
+	</select>
+	
+	<select id="getIdSearch" resultType="String">
+		select mid from login2 where name = #{name} and email = #{email};
+	</select>
+	
+	<select id="getPwdSearch" resultType="com.spring.javagreenS_jjm.vo.JoinVO">
+		select * from login2 where mid = #{mid} and email = #{email};
+	</select>
+	
+	
+	<insert id="setJoinInputOk">
+		insert into login2 values (default, #{vo.mid}, #{vo.pwd}, #{vo.name}, #{vo.address}, #{vo.tel}, #{vo.email}, #{vo.gender}, #{vo.birthday}, #{vo.mailCheck}, default, default, default, default);
+	</insert>
+	
+	
+	<update id="setPwdChange">
+		update login2 set pwd = #{pwd} where mid = #{mid};
+	</update>
+	
+	<update id="setJoinInfoUpdateOk">
+		update login2 set pwd = #{vo.pwd}, name = #{vo.name}, address = #{vo.address}, tel = #{vo.tel}, email = #{vo.email}, gender = #{vo.gender}, birthday = #{vo.birthday}, mailCheck = #{vo.mailCheck}, lastDate = default where mid = #{vo.mid};
+	</update>
+	
+	<update id="setMemPointUpdate">
+		update login2 set point = 3000 where mid = #{mid};
+	</update>
+</mapper>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.javagreenS_jjm.dao.AdminDAO">
+	<select id="getMemList" resultType="com.spring.javagreenS_jjm.vo.JoinVO">
+		select * from login2 where level != 1 order by idx desc limit #{startIndexNo}, #{pageSize};
+	</select>
+	
+	<select id="totRecCnt" resultType="int">
+		select count(*) from login2 where level != 1;
+	</select>
+	
+	<select id="orderListTotRecCnt" resultType="int">
+		select count(*) from baesong2;
+	</select>
+	
+	<select id="getOrderList" resultType="com.spring.javagreenS_jjm.vo.BaesongVO">
+		select * from baesong2, order2 where baesong2.orderIdx = order2.orderIdx GROUP BY baesong2.orderIdx order by baesong2.idx desc limit #{startIndexNo}, #{pageSize};
+	</select>
+	
+	<select id="getOrderCount" resultType="com.spring.javagreenS_jjm.vo.ChartVO">
+		select b.orderIdx, o.orderIdx, o.productIdx, o.orderDate, p.idx, p.pno, pt.*, count(pt.pno) as orderCount from baesong2 as b, order2 as o, product2 as p, productType2 as pt where b.orderIdx = o.orderIdx and o.productIdx = p.idx and p.pno = pt.pno and orderStatus = '배송완료' group by pt.pno;
+	</select>
+	
+	<select id="getBaesongOkList" resultType="com.spring.javagreenS_jjm.vo.BaesongVO">
+		select b.*, o.commodity, o.orderDate from baesong2 as b, order2 as o where b.orderIdx = o.orderIdx group by b.orderIdx order by b.orderIdx desc limit 5;
+	</select>
+	
+	<select id="getOrderCountByDate" resultType="com.spring.javagreenS_jjm.vo.OrderVO">
+		select substring(o.orderDate,1,10) as orderDate, count(o.orderDate) as orderCount from order2 as o group by substring(o.orderDate,1,10) order by o.orderDate desc limit 7;
+	</select>
+	
+	<select id="getWatingReplyCount" resultType="int">
+		select count(*) from qna2 where adChk = 'no';
+	</select>
+	
+	
+	<update id="levelUpdate">
+		update login2 set level = #{level} where idx = #{idx};
+	</update>
+	
+	<update id="setOrderStatusUpdate">
+		update baesong2 set orderStatus = #{orderStatus}, baesongDate = default where orderIdx = #{orderIdx};
+	</update>
+	
+	
+	<delete id="memInfoDelete">
+		delete from login2 where mid = #{mid};
+	</delete>
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.javagreenS_jjm.dao.ReviewDAO">
+	<select id="getOrderInfo" resultType="com.spring.javagreenS_jjm.vo.BaesongVO">
+		select * from baesong2, order2 where baesong2.orderIdx = order2.orderIdx and order2.orderIdx = #{orderIdx};
+	</select>
+	
+	<select id="getReviewInfo" resultType="com.spring.javagreenS_jjm.vo.ReviewVO">
+		select * from review2 where orderIdx = #{orderIdx};
+	</select>
+	
+	<select id="reviewListTotRecCnt" resultType="int">
+		select count(*) from review2;
+	</select>
+	
+	<select id="getReviewList" resultType="com.spring.javagreenS_jjm.vo.ReviewVO">
+		select * from review2 order by idx desc limit #{startIndexNo}, #{pageSize};
+	</select>
+
+	<select id="getProductInfo" resultType="com.spring.javagreenS_jjm.vo.ProductVO">
+		select * from product2 where commodity like #{commodity};
+	</select>
+	
+	
+	<insert id="setReviewInput">
+		insert into review2 values (default, #{vo.orderIdx}, #{vo.commodity}, #{vo.mid}, #{vo.name}, #{vo.title}, #{vo.content}, #{vo.rating}, #{vo.fSName}, #{vo.fSize}, default);
+	</insert>
+	
+	
+	<update id="productImgDelete">
+		update review2 set fSName = '', fSize = 0 where orderIdx = #{orderIdx};
+	</update>
+	
+	<update id="setReviewUpdate">
+		update review2 set title = #{vo.title}, content = #{vo.content}, rating = #{vo.rating}, fSName = #{vo.fSName}, fSize = #{vo.fSize}, reviewDate = default where orderIdx = #{vo.orderIdx};
+	</update>
+	
+	
+	<delete id="setReviewDelete">
+		delete from review2 where orderIdx = #{orderIdx};
+	</delete>
+</mapper>

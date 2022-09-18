@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.javagreenS_jjm.dao.MemberDAO">
+	<select id="memOrderListTotRecCnt" resultType="int">
+		select count(*) from baesong2 where mid = #{mid};
+	</select>
+	
+	<select id="getBaesongList" resultType="com.spring.javagreenS_jjm.vo.BaesongVO">
+		select * from baesong2, order2 where baesong2.orderIdx = order2.orderIdx and baesong2.mid = #{mid} GROUP BY baesong2.orderIdx order by baesong2.idx desc limit #{startIndexNo}, #{pageSize};
+	</select>
+	
+	<select id="getListSize" resultType="int">
+		select count(*) from baesong2, order2 where baesong2.orderIdx = order2.orderIdx and order2.orderIdx = #{orderIdx} and baesong2.mid = #{mid} order by baesong2.idx desc;
+	</select>
+	
+	<select id="getOrderList" resultType="com.spring.javagreenS_jjm.vo.BaesongVO">
+		select * from baesong2, order2 where baesong2.orderIdx = order2.orderIdx and order2.orderIdx = #{orderIdx} and baesong2.mid = #{mid} order by baesong2.idx desc;
+	</select>
+	
+	<select id="getReviewCheck" resultType="com.spring.javagreenS_jjm.vo.BaesongVO">
+		select * from baesong2 left join review2 on baesong2.orderIdx = review2.orderIdx where baesong2.mid = #{mid} order by baesong2.idx desc limit #{startIndexNo}, #{pageSize};
+	</select>
+	
+	<select id="myQnaListTotRecCnt" resultType="int">
+		select count(*) from qna2 where mid = #{mid};
+	</select>
+	
+	<select id="getMyQnaList" resultType="com.spring.javagreenS_jjm.vo.QnaVO">
+		select * from qna2, qnaType2 where qna2.qnaTypeIdx = qnaType2.idx and mid = #{mid} order by qna2.idx desc limit #{startIndexNo}, #{pageSize};
+	</select>
+	
+	
+	<update id="orderDelete">
+		update baesong2 set orderStatus = '주문취소', baesongDate = default where orderIdx = #{orderIdx};
+	</update>
+	
+	<update id="memDelete">
+		update login2 set lastDate = default, userDel = 'OK' where mid = #{mid};
+	</update>
+</mapper>
